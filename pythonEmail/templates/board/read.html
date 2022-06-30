@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ {{ post.title | safe }}
+ {{ post.contents | safe}}
+
+
+{% for postimage in post.postimage_set.all %}
+ 이미지: <img src = "/media/{{postimage.image}}">
+{% endfor %}
+
+</body>
+</html>

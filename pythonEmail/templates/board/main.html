@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+        <a href="createWork">Make</a>
+
+
+{% for work in works %}
+                    <div>
+                        {{work.title}}
+                        {{work.contents}}
+                        <img src = "/media/{{work.image}}">
+
+                    </div>
+ {% endfor %}
+</body>
+</html>

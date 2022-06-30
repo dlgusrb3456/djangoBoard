@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block contents1 %}
+
+                        {% if request.user == works.writer %}
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="deleteWork/{{works.id}}">Delete</a></li>
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="updateWork/{{works.id}}">Update</a></li>
+                        {% endif %}
+
+{% endblock %}
+
+{% block contents2 %}
+<div>
+    그림 내용:
+    {% for postimage in works.postimage_set.all %}
+         <img src = "/media/{{postimage.image}}" WIDTH="50vw">
+    {% endfor %}
+    <h5>내용: <br/><br/> {{works.contents | safe}}</h5>
+
+</div>
+<form action="/reply/create/{{works.id}}" method="post">
+                                {% csrf_token %}
+                                {{replyForm}}
+                                <button>댓글달기</button>
+                        </form>
+{% for reply in works.reply_set.all %}
+
+
+
+                    <div class="col mb-5">
+
+                        <div class="card h-100">
+                            <!-- Product image-->
+<!--                            <img class="card-img-top" src="{% static 'assets/original.jpg' %}" alt="..." />-->
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h4>  댓글 </h4>
+                                    <h5 class="fw-bolder">  {{reply.contents | safe}}</h5>
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            {% if request.user == reply.writer %}
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/reply/update/{{reply.id}}/{{bid}}">수정</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/reply/delete/{{reply.id}}/{{bid}}">삭제</a></div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+ {% endfor%}
+{% endblock %}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+                        {% if works %}
+                            <div>
+                                {{works.id}}
+                                {{works.contents}}
+                            </div>
+                        {% endif %}
+                    <form action="deleteWork/{{works.id}}" method="GET">
+                        <button>Delete</button>
+                    </form>
+                    <form action="updateWork/{{works.id}}" method="GET">
+                        <button>Update</button>
+                    </form>
+                    <form action="/reply/create/{{works.id}}" method="post">
+                        {% csrf_token %}
+                        {{replyForm}}
+                        <button>댓글달기</button>
+                    </form>
+                        {% for reply in works.reply_set.all %}
+                            {{reply.contents}} <br/>
+                        {% endfor %}
+
+</body>
+</html>
